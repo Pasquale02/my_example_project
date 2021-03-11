@@ -53,6 +53,24 @@
 		</dependency>
 		
 		<!-- END SWAGGER -->
+		
+		<dependency>
+	        <groupId>org.springframework.kafka</groupId>
+	        <artifactId>spring-kafka</artifactId>
+	    </dependency>
+		
+		<!-- PROMETHEUS DEPENDENCIES BEGIN -->
+		<!-- THE FIRST IS FOR ACTUATOR -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+	    <dependency>
+		    <groupId>io.micrometer</groupId>
+		    <artifactId>micrometer-registry-prometheus</artifactId>
+		    <scope>runtime</scope>
+	    </dependency>
+        <!-- PROMETHEUS DEPENDENCIES END -->
 	</dependencies>
 
 	<build>
