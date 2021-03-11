@@ -34,6 +34,7 @@ public class JsonPlaceholderController {
 	public ResponseEntity<List<User>> getUsers(
 			@RequestHeader(value = "request_id", required = false) String headerRequestId, HttpServletRequest request)
 			throws Exception {
+
 		List<User> users = userService.getUsers(headerRequestId);
 
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
@@ -42,7 +43,7 @@ public class JsonPlaceholderController {
 	@PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Post> postPost(@RequestHeader(value = "request_id", required = false) String headerRequestId,
 			HttpServletRequest request, @RequestBody @Valid Post bodyRequest) throws Exception {
-		System.out.println("dfsbf");
+
 		Post post = postService.postPost(headerRequestId, bodyRequest);
 
 		return new ResponseEntity<Post>(post, HttpStatus.OK);

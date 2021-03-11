@@ -3,17 +3,18 @@ package com.service;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.domain.Post;
+import com.exception.ApplicationException;
 
 @Service
 public class PostService {
 
-
-	public Post postPost(String headerRequestId, Post bodyRequest) {
+	public Post postPost(String headerRequestId, Post bodyRequest) throws ApplicationException{
 
 		Post post = new Post();
 		RestTemplate restTemplate = new RestTemplate();
@@ -26,7 +27,7 @@ public class PostService {
 			post = response.getBody();
 
 		} catch (Exception e) {
-			System.out.println("ecc");
+			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, null, "Errore post post");
 		}
 
 		return post;
