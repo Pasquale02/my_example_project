@@ -25,6 +25,7 @@ public class PostService {
 		
 		span.log("RequestId: " + headerRequestId);
 		try {
+			// https://reqres.in/api/users
 			ResponseEntity<Post> response = restTemplate.exchange("http://jsonplaceholder.typicode.com/posts",
 					HttpMethod.POST, entity, Post.class);
 			post = response.getBody();
