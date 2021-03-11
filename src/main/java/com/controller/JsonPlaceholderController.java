@@ -20,7 +20,9 @@ import com.domain.User;
 import com.service.PostService;
 import com.service.UserService;
 
-@RequestMapping(path = "/jsonPlaceholder")
+import io.swagger.annotations.ApiOperation;
+
+@RequestMapping
 @RestController
 public class JsonPlaceholderController {
 
@@ -31,6 +33,7 @@ public class JsonPlaceholderController {
 	private PostService postService;
 
 	@GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Get users", notes = "Get users from jsonPlaceholder website")
 	public ResponseEntity<List<User>> getUsers(
 			@RequestHeader(value = "request_id", required = false) String headerRequestId, HttpServletRequest request)
 			throws Exception {
