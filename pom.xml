@@ -71,6 +71,15 @@
 		    <scope>runtime</scope>
 	    </dependency>
         <!-- PROMETHEUS DEPENDENCIES END -->
+        
+        <!-- JAEGER DEPENDENCIES BEGIN -->
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <!-- JAEGER DEPENDENCIES END -->
+        
 	</dependencies>
 
 	<build>
