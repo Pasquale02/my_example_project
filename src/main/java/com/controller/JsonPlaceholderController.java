@@ -5,10 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.domain.Post;
 import com.domain.User;
+import com.model.Anagrafica;
+import com.service.KafkaService;
 import com.service.PostService;
 import com.service.UserService;
 
@@ -38,12 +42,21 @@ public class JsonPlaceholderController {
 
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private KafkaService kafkaService;
 
     @Autowired
     private Tracer tracer;
 
     @Autowired
     HttpHeaders httpHeaders;
+    
+    @Value("${spring.kafka.topic.source.input}")
+    private String topicName;
+    
+//    @Autowired
+//    private KafkaTemplate<String, Anagrafica> kafkaTemplate;
 
 	@GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Get users", notes = "Get users from jsonPlaceholder website")
@@ -74,5 +87,15 @@ public class JsonPlaceholderController {
 		Post post = postService.postPost(headerRequestId, bodyRequest, span);
 
 		return new ResponseEntity<Post>(post, HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/postKafka", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Anagrafica> postAnag(
+			HttpServletRequest request, @RequestBody @Valid Post bodyRequest) throws Exception {
+		
+		Anagrafica anag = new Anagrafica();
+		kafkaService.sendMessage(anag);
+		return new ResponseEntity<Anagrafica>(anag, HttpStatus.OK);
+	
 	}
 }
