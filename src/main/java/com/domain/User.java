@@ -3,6 +3,7 @@ package com.domain;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.GsonBuilder;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,6 @@ public class User {
 
 	@Override
 	public String toString() {
-		return this.toString();
+		return new GsonBuilder().create().newBuilder().setPrettyPrinting().create().toJson(this);
 	}
 }

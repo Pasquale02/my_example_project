@@ -31,7 +31,7 @@ public class PostService {
 			post = response.getBody();
 
 		} catch (Exception e) {
-			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, null, "Errore post post");
+			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Errore post post");
 		} finally {
 			span.finish();
 		}

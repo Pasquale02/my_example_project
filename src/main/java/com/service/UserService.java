@@ -17,7 +17,6 @@ import io.opentracing.Span;
 @Service
 public class UserService {
 
-
 	public List<User> getUsers(String headerRequestId, Span span) throws ApplicationException {
 
 		User[] users = null;
@@ -31,7 +30,7 @@ public class UserService {
 			users = userArray.getBody();
 
 		} catch (Exception e) {
-			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, null, "Errore get users");
+			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Errore get users");
 		} finally {
 			span.log("Response: \n" + users.toString());
 			span.finish();

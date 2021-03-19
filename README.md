@@ -24,3 +24,7 @@
 ### ApiModelProperty
 
 * Aggiunta descrizione sui model
+
+# PDF
+
+Non ho aggiunto la dipendenza nel pom, ma il jar nelle dipendenze
