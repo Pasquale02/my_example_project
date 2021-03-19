@@ -2,9 +2,13 @@ package com.model;
 
 import java.sql.Timestamp;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.GsonBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "tsCaricamento", "nrCampiNotNull", "statoAcquisizione", "cdErrore", "dsErrore" })
@@ -74,6 +78,12 @@ public class Monitoring {
 
 	public Monitoring() {
 		super();
+	}
+	
+	@Override
+	public String toString() {
+		 return new GsonBuilder().create().newBuilder().setPrettyPrinting().create().toJson(this);
+//		return ReflectionToStringBuilder.toString(this,ToStringStyle.MULTI_LINE_STYLE);
 	}
 
 }

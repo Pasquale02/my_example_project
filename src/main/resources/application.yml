@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: 'KafkaSingleTransactional4StreamCache'
+    version: '0.0.1'
+  kafka:
+    bootstrap-servers: 10.183.134.234:9092,10.183.134.235:9092,10.183.134.235:9093
+    producer:
+        tx-id: test-tx-it
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        #value-serializer: com.config.AnagraficaSerializer
+    topic:
+      source:
+        input: ${KAFKA_INPUT_TOPIC_SOURCE:auc2.notifica.logarea_pasquale}
+      output:
+        target: ${KAFKA_TOPIC_OUTPUT:output}
+      dlt:
+        failures: ${KAFKA_DLT_TOPIC_SOURCE:dlt}
+    consumer:
+      fetch:
+        min:
+          mb: ${MIN_FETCH_MB:0}
+        max:
+          wait: ${MAX_FETCH_WAIT:1000}
+      max:
+        pool:
+          records: ${MAX_POOL_RECORDS:1000}
+      group-id: ${GROUP_ID:kafkasingletransactional4streamcache.consumer.group.2}
+      auto-offset-reset: ${AUTO-OFFSET-RESET:earliest}
+      enable-auto-commit: ${ENABLE-AUTO-COMMIT:false}
+      retries:
+        maxAttempts: ${RETRIES-MAX-ATTEMPTS:2}
+
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    info:
+      enabled: true
+  metrics:
+    kafka:
+      consumer:
+        enabled: true
+    distribution:
+      # public metrics as an histogram, with a fixed number of buckets ranging
+      # from minimum-expected to maximum-expected response times
+      # (response time range bucket/number of requests in bucket)
+      percentiles-histogram:
+        http: true
+      minimum-expected-value:
+        http: 5ms
+      maximum-expected-value:
+        http: 1s
+      # publish metrics as a quantile distribution
+      # (quantile of total number of requests/response time)
+      percentiles:
+        http: 0.1, 0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 1.0
+    export:
+      prometheus:
+        enabled: true      
+
+logging:
+  level:
+    it.poste: ${LOG_LEVEL:info}
