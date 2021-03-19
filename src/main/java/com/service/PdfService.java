@@ -67,11 +67,12 @@ public class PdfService {
 			// aggiunta img nel file 
 			File file = new File("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
 			PDDocument doc = PDDocument.load(file);
-			PDPage page = doc.getPage(0);
+			PDPage drawPage = new PDPage();
 			PDImageXObject pdImage = PDImageXObject.createFromFile("C:/Users/USER/Documents/progPoste/logo.jpg", doc);
-			PDPageContentStream contentStreamImage = new PDPageContentStream(doc, page);
-			contentStreamImage.drawImage(pdImage, 70, 250);
+			PDPageContentStream contentStreamImage = new PDPageContentStream(doc, drawPage);
+			contentStreamImage.drawImage(pdImage, 10, 50);
 			contentStreamImage.close();
+			doc.addPage(drawPage);
 			doc.save("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
 			doc.close();
 			
