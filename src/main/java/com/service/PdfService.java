@@ -8,6 +8,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.http.HttpStatus;
@@ -64,7 +66,8 @@ public class PdfService {
 			document.save("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
 			document.close();
 			
-			// aggiunta img nel file 
+			// Aggiunta img nel file
+			
 			File file = new File("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
 			PDDocument doc = PDDocument.load(file);
 			PDPage drawPage = new PDPage();
@@ -76,7 +79,19 @@ public class PdfService {
 			doc.save("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
 			doc.close();
 			
-			result = "1) create pdf; 2) added image";
+			// Crittazione documento
+			
+			File fileToCrit = new File("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc.pdf");
+			PDDocument docToCrit = PDDocument.load(fileToCrit);
+			AccessPermission accessPermission = new AccessPermission();
+			StandardProtectionPolicy spp = new StandardProtectionPolicy("1234","1234",accessPermission);
+			spp.setEncryptionKeyLength(128);
+			spp.setPermissions(accessPermission);
+			docToCrit.protect(spp);
+			docToCrit.save("C:/Users/USER/Documents/progPoste/ms_my_examples/my_doc_crittato.pdf");
+			docToCrit.close();
+			
+			result = "1) create pdf; 2) added image; 3) crittazione documento";
 			
 		} catch (Exception e) {
 			throw new ApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
