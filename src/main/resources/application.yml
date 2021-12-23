@@ -24,7 +24,7 @@ spring:
       max:
         pool:
           records: ${MAX_POOL_RECORDS:1000}
-      group-id: ${GROUP_ID:kafkasingletransactional4streamcache.consumer.group.2}
+      group-id: ${GROUP_ID:kafkasingletransactional4streamcache.consumer.group.12}
       auto-offset-reset: ${AUTO-OFFSET-RESET:earliest}
       enable-auto-commit: ${ENABLE-AUTO-COMMIT:false}
       retries:
