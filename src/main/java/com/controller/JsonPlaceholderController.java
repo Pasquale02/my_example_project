@@ -2,7 +2,6 @@ package com.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.domain.Post;
 import com.domain.User;
-import com.service.PdfService;
 import com.service.PostService;
 import com.service.UserService;
 
@@ -40,9 +38,6 @@ public class JsonPlaceholderController {
 	@Autowired
 	private PostService postService;
 
-	@Autowired
-	private PdfService pdfService;
-	
     @Autowired
     private Tracer tracer;
 
@@ -68,7 +63,7 @@ public class JsonPlaceholderController {
 	@PostMapping(path = "/post", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Post user", notes = "Post user to jsonPlaceholder website")
 	public ResponseEntity<Post> postPost(@RequestHeader(value = "request_id", required = false) String headerRequestId,
-			HttpServletRequest request, @RequestBody @Valid Post bodyRequest) throws Exception {
+			HttpServletRequest request, @RequestBody Post bodyRequest) throws Exception {
 
         TextMap textMapExtractAdapter = new TextMapAdapter(httpHeaders.toSingleValueMap());
         SpanContext parentContext =
@@ -81,19 +76,4 @@ public class JsonPlaceholderController {
 		return new ResponseEntity<Post>(post, HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/post/pdf", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Create pdf", notes = "Create pdf in local path")
-	public ResponseEntity<String> createPdf(@RequestHeader(value = "request_id", required = false) String headerRequestId,
-			HttpServletRequest request, @RequestBody @Valid Post bodyRequest) throws Exception {
-
-        TextMap textMapExtractAdapter = new TextMapAdapter(httpHeaders.toSingleValueMap());
-        SpanContext parentContext =
-                tracer.extract(Format.Builtin.HTTP_HEADERS, textMapExtractAdapter);
-
-        // Create a span
-        Span span = tracer.buildSpan("PostToPdf").asChildOf(parentContext).start();
-		String result = pdfService.createPdf(headerRequestId, bodyRequest, span);
-
-		return new ResponseEntity<String>(result, HttpStatus.OK);
-	}
 }
