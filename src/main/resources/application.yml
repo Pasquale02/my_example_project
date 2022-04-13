@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: ov-ws-json-placeholder
+
+swagger:
+  enable: true
+  apiInfo:
+    title: ${spring.application.name}
+    description: 'Api for manage json placeholder'
+
+springdoc:
+  version: 1.0.2
+
+api-docs:
+  hosts:
+    - url: 'http://localhost:8081/users'
+      description: "Get Locale"
+    - url: 'http://localhost:8081/post/pdf'
+      description: "Post Locale"
+
+# management port
+management:
+  endpoints:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+
+management.metrics.export.prometheus.enabled: true
+management.endpoints.web.exposure.include: health,info,metrics,prometheus
+
+opentracing:
+  jaeger:
+    enabled: ${JAEGER_ENABLED:true}
+    service-name: ${JAEGER_SERVICE_NAME:ov-ws-anagrafica-cribis}
+    log-spans: ${JAEGER_REPORTER_LOG_SPANS:false}
+    probabilistic-sampler:
+      sampling-rate: ${JAEGER_SAMPLING_RATE:1.0}
+    udp-sender:
+      host: ${JAEGER_AGENT_HOST:localhost}
+      port: ${JAEGER_AGENT_PORT:6831}
+
+logging:
+  level:
+    root: ${LOG_ROOT_LEVEL:info}
+    it:
+      posteitaliane: ${LOG_LEVEL:debug}
