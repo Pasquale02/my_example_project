@@ -24,6 +24,14 @@ public class MicrometerUtility {
 	public static final String TOTAL_RESPONSE_OK = BASE + API + "_response_ok";
 	public static final String TOTAL_RESPONSE_KO = BASE + API + "_response_ko";
 
+	public static final String TOTAL_GET_REQUEST = BASE + API + "_get_request_counter";
+	public static final String TOTAL_GET_RESPONSE_OK = BASE + API + "_get_response_ok";
+	public static final String TOTAL_GET_RESPONSE_KO = BASE + API + "_get_response_ko";
+	
+	public static final String TOTAL_POST_REQUEST = BASE + API + "_post_request_counter";
+	public static final String TOTAL_POST_RESPONSE_OK = BASE + API + "_post_response_ok";
+	public static final String TOTAL_POST_RESPONSE_KO = BASE + API + "_post_response_ko";
+	
 	public static final String EXECUTION_TIME = BASE + API + "_execute_time";
 	public static final String TOTAL_REQUEST_GENERIC_KO = BASE + API + "_request_counter_generic_ko";
 	public static final String TOTAL_REQUEST_MESS_NOT_READABLE_KO = BASE + API + "_request_counter_not_readable";
