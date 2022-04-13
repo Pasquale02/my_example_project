@@ -41,5 +41,8 @@ public final class APITCostant {
 	public static final String INTERNAL_ERROR = "Internal Server Error";
 	public static final String INVALID_PAYLOAD = "Invalid Payload";
 	public static final String BAD_REQUEST = "Bad request";
+	
+	public static final String errorInCall = "Errore nella chiamata al servizio: ";
+
 
 }
