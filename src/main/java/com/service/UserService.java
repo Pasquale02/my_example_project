@@ -24,6 +24,7 @@ import com.utils.GenericUtils;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import io.opentracing.tag.Tags;
 
 @Service
 public class UserService {
@@ -53,6 +54,8 @@ public class UserService {
 					HttpMethod.GET, null, User[].class);
 			users = userArray.getBody();
 
+			this.processingMetrics(users, headerRequestId, startPostTime, getRequestSpan);
+
 		} catch (Exception ex) {
 
 			LOG.error(ex);
@@ -64,6 +67,7 @@ public class UserService {
 
 			MicrometerUtility.incrementMetrics(headerRequestId, startPostTime, MicrometerUtility.TOTAL_RESPONSE_KO,
 					getRequestSpan);
+
 			throw applicationException;
 
 		} finally {
@@ -71,5 +75,31 @@ public class UserService {
 		}
 
 		return Arrays.asList(users);
+	}
+	
+	private void processingMetrics(User[] users, String requester, Instant startPostTime, Span postRequest) {
+
+		if (users != null) {
+			this.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_GET_RESPONSE_OK, postRequest);
+		} else {
+			this.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_GET_RESPONSE_KO, postRequest);
+		}
+	}
+
+	private void incrementMetrics(String requester, Instant startTime, String typeResponse, Span processedRequest) {
+
+		MicrometerUtility.numberRequest(typeResponse);
+		String base_requester = MicrometerUtility.BASE + MicrometerUtility.API + "_requests_" + requester.toUpperCase();
+
+		if (typeResponse.equals(MicrometerUtility.TOTAL_GET_RESPONSE_OK)) {
+			MicrometerUtility.numberRequest(base_requester + "_counter");
+			MicrometerUtility.executionTimer(startTime, typeResponse, requester);
+
+		} else if (typeResponse.equals(MicrometerUtility.TOTAL_GET_RESPONSE_KO)) {
+			MicrometerUtility.numberRequest(base_requester + "_counter_ko");
+		}
+		if (typeResponse.equals(MicrometerUtility.TOTAL_RESPONSE_KO)) {
+			Tags.ERROR.set(processedRequest, true);
+		}
 	}
 }
