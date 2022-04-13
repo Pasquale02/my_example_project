@@ -2,6 +2,10 @@ package com.service;
 
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +27,8 @@ import com.utils.GenericUtils;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
-import io.opentracing.tag.Tags;
+import io.opentracing.propagation.Format;
+import io.opentracing.propagation.TextMap;
 
 @Service
 public class PostService {
@@ -44,7 +49,8 @@ public class PostService {
 
 		Post post = new Post();
 
-		GenericUtils.setTracer(span, headers);
+		// se lo metto in GenericUtils da errore in esecuzione
+		this.setTracer(postRequestSpan, headers);
 		postRequestSpan.log("Chiamata verso post json placeholder");
 		postRequestSpan.setBaggageItem("bodyRequest", bodyRequest.toString());
 
@@ -79,26 +85,28 @@ public class PostService {
 	private void processingMetrics(Post bodyRequest, String requester, Instant startPostTime, Span postRequest) {
 
 		if (bodyRequest != null && bodyRequest.getBody() != null) {
-			this.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_POST_RESPONSE_OK, postRequest);
+			GenericUtils.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_POST_RESPONSE_OK, postRequest);
 		} else {
-			this.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_POST_RESPONSE_KO, postRequest);
+			GenericUtils.incrementMetrics(requester, startPostTime, MicrometerUtility.TOTAL_POST_RESPONSE_KO, postRequest);
 		}
 	}
 
-	private void incrementMetrics(String requester, Instant startTime, String typeResponse, Span processedRequest) {
+	private void setTracer(Span processRequest, HttpHeaders headers) {
 
-		MicrometerUtility.numberRequest(typeResponse);
-		String base_requester = MicrometerUtility.BASE + MicrometerUtility.API + "_requests_" + requester.toUpperCase();
+		tracer.inject(processRequest.context(), Format.Builtin.HTTP_HEADERS, new TextMap() {
 
-		if (typeResponse.equals(MicrometerUtility.TOTAL_POST_RESPONSE_OK)) {
-			MicrometerUtility.numberRequest(base_requester + "_counter");
-			MicrometerUtility.executionTimer(startTime, typeResponse, requester);
+			@Override
+			public Iterator<Map.Entry<String, String>> iterator() {
+				throw new UnsupportedOperationException(
+						"TextMapInjectAdapter should only be used with Tracer.inject()");
+			}
 
-		} else if (typeResponse.equals(MicrometerUtility.TOTAL_POST_RESPONSE_KO)) {
-			MicrometerUtility.numberRequest(base_requester + "_counter_ko");
-		}
-		if (typeResponse.equals(MicrometerUtility.TOTAL_RESPONSE_KO)) {
-			Tags.ERROR.set(processedRequest, true);
-		}
+			@Override
+			public void put(String key, String value) {
+				List<String> values = new LinkedList<>();
+				values.add(value);
+				headers.put(key, values);
+			}
+		});
 	}
 }

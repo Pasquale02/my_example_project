@@ -1,26 +1,18 @@
 package com.utils;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
+import com.config.MicrometerUtility;
 import com.enumeration.EnumHttpCode;
 import com.exception.ApplicationException;
 
 import io.opentracing.Span;
-import io.opentracing.Tracer;
-import io.opentracing.propagation.Format;
-import io.opentracing.propagation.TextMap;
+import io.opentracing.tag.Tags;
 
 public class GenericUtils {
-
-	@Autowired
-	private static Tracer tracer;
 
 	public static HttpHeaders setHeaders(String requester) {
 		HttpHeaders headers = new HttpHeaders();
@@ -57,22 +49,24 @@ public class GenericUtils {
 		return applicationException;
 	}
 
-	public static void setTracer(Span processRequest, HttpHeaders headers) {
+	public static void incrementMetrics(String requester, Instant startTime, String typeResponse,
+			Span processedRequest) {
 
-		tracer.inject(processRequest.context(), Format.Builtin.HTTP_HEADERS, new TextMap() {
+		MicrometerUtility.numberRequest(typeResponse);
+		String requesterUser = requester != null ? requester : "";
+		String base_requester = MicrometerUtility.BASE + MicrometerUtility.API + "_requests_" + requesterUser;
 
-			@Override
-			public Iterator<Map.Entry<String, String>> iterator() {
-				throw new UnsupportedOperationException(
-						"TextMapInjectAdapter should only be used with Tracer.inject()");
-			}
+		if (typeResponse.equals(MicrometerUtility.TOTAL_GET_RESPONSE_OK)
+				|| typeResponse.equals(MicrometerUtility.TOTAL_POST_RESPONSE_OK)) {
+			MicrometerUtility.numberRequest(base_requester + "_counter");
+			MicrometerUtility.executionTimer(startTime, typeResponse, requesterUser);
 
-			@Override
-			public void put(String key, String value) {
-				List<String> values = new LinkedList<>();
-				values.add(value);
-				headers.put(key, values);
-			}
-		});
+		} else if (typeResponse.equals(MicrometerUtility.TOTAL_GET_RESPONSE_KO)
+				|| typeResponse.equals(MicrometerUtility.TOTAL_POST_RESPONSE_KO)) {
+			MicrometerUtility.numberRequest(base_requester + "_counter_ko");
+		}
+		if (typeResponse.equals(MicrometerUtility.TOTAL_RESPONSE_KO)) {
+			Tags.ERROR.set(processedRequest, true);
+		}
 	}
 }
