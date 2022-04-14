@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.config.APITCostant;
+import com.config.Constants;
 import com.config.MicrometerUtility;
 import com.domain.User;
 import com.enumeration.EnumHttpCode;
@@ -64,11 +64,11 @@ public class UserService {
 		} catch (Exception ex) {
 
 			LOG.error(ex);
-			getRequestSpan.log(APITCostant.errorInCall + ex.getMessage());
+			getRequestSpan.log(Constants.errorInCall + ex.getMessage());
 
 			ApplicationException applicationException = GenericUtils.setApplicationException(
 					EnumHttpCode.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.name(),
-					HttpStatus.INTERNAL_SERVER_ERROR, APITCostant.errorInCall, ex.getMessage());
+					HttpStatus.INTERNAL_SERVER_ERROR, Constants.errorInCall, ex.getMessage());
 
 			MicrometerUtility.incrementMetrics(headerRequestId, startPostTime, MicrometerUtility.TOTAL_RESPONSE_KO,
 					getRequestSpan);

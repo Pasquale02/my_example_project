@@ -1,8 +1,8 @@
 package com.config;
 
-public final class APITCostant {
+public final class Constants {
 
-	private APITCostant() {
+	private Constants() {
 	}
 
 	// API BASE
