@@ -63,6 +63,7 @@ public class UserController {
 			activeSpan.setBaggageItem("RESPONSE", users.toString());
 			LOG.debug("[RESPONSE]: {}", users);
 		} finally {
+			activeSpan.finish();
 			MicrometerUtility.timeElapsed(startTime, executionJsonRequestTimer);
 			MDC.clear();
 		}
