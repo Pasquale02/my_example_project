@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User {
+public class Utente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +33,7 @@ public class User {
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Collection<Role> roles;
+	private Collection<Ruolo> roles;
 
 	@Override
 	public String toString() {

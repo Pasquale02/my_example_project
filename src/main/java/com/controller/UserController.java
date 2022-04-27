@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.config.MicrometerUtility;
-import com.domainJwt.User;
+import com.domainJwt.Utente;
 import com.service.UserService;
 import com.utils.MetricUtils;
 
@@ -42,7 +42,7 @@ public class UserController {
 	HttpHeaders httpHeaders;
 
 	@GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<User>> getUsers(String requester) {
+	public ResponseEntity<List<Utente>> getUsers(String requester) {
 
 		final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -52,7 +52,7 @@ public class UserController {
 		Timer executionJsonRequestTimer = MicrometerUtility.executionTimer(startTime, MicrometerUtility.EXECUTION_TIME,
 				"GET");
 		MetricUtils.incrementMetrics(requester);
-		List<User> users = new ArrayList<>();
+		List<Utente> users = new ArrayList<>();
 		try {
 			MetricUtils.mdcLogging(applicationName, requester);
 
@@ -68,6 +68,6 @@ public class UserController {
 			MDC.clear();
 		}
 
-		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		return new ResponseEntity<List<Utente>>(users, HttpStatus.OK);
 	}
 }

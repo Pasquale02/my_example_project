@@ -2,19 +2,19 @@ package com.service;
 
 import java.util.List;
 
-import com.domainJwt.Role;
-import com.domainJwt.User;
+import com.domainJwt.Ruolo;
+import com.domainJwt.Utente;
 
 public interface UserService {
 
-	User saveUser(User user);
+	Utente saveUser(Utente user);
 
-	Role saveRole(Role role);
+	Ruolo saveRole(Ruolo role);
 
 	void addRoleToUser(String username, String rolename);
 
 	// potrei passare anche l'id
-	User getUser(String username);
+	Utente getUser(String username);
 
-	List<User> getUsers();
+	List<Utente> getUsers();
 }

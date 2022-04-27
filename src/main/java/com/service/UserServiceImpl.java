@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.domain.repoJwt.RoleRepo;
 import com.domain.repoJwt.UserRepo;
-import com.domainJwt.Role;
-import com.domainJwt.User;
+import com.domainJwt.Ruolo;
+import com.domainJwt.Utente;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +29,13 @@ public class UserServiceImpl implements UserService {
 	private final RoleRepo roleRepo;
 
 	@Override
-	public User saveUser(User user) {
+	public Utente saveUser(Utente user) {
 		log.info("Saving new user {} in db", user.getName());
 		return userRepo.save(user);
 	}
 
 	@Override
-	public Role saveRole(Role role) {
+	public Ruolo saveRole(Ruolo role) {
 		log.info("Saving new role {} in db", role.getName());
 		return roleRepo.save(role);
 	}
@@ -43,19 +43,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void addRoleToUser(String username, String rolename) {
 		log.info("Adding role {} to user {}", rolename, username);
-		User user = userRepo.findByUsername(username);
-		Role role = roleRepo.findByName(rolename);
+		Utente user = userRepo.findByUsername(username);
+		Ruolo role = roleRepo.findByName(rolename);
 		user.getRoles().add(role);
 	}
 
 	@Override
-	public User getUser(String username) {
+	public Utente getUser(String username) {
 		log.info("Fetching user {} from db", username);
 		return userRepo.findByUsername(username);
 	}
 
 	@Override
-	public List<User> getUsers() {
+	public List<Utente> getUsers() {
 		log.info("Fetching users from db");
 		return userRepo.findAll();
 	}

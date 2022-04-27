@@ -1,22 +1,36 @@
 package com.controller;
 
+import java.lang.invoke.MethodHandles;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.config.MicrometerUtility;
+import com.domainJwt.Utente;
 import com.service.UserService;
+import com.utils.MetricUtils;
 
-import io.opentracing.Tracer;
+import io.micrometer.core.instrument.Timer;
 
 @RestController
 public class JsonPlaceholderController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private Tracer tracer;
 
 	@Autowired
 	HttpHeaders httpHeaders;
@@ -31,8 +45,6 @@ public class JsonPlaceholderController {
 //
 //		final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 //
-//		Span activeSpan = tracer.activeSpan();
-//
 //		Instant startTime = Instant.now();
 //		Timer executionJsonRequestTimer = MicrometerUtility.executionTimer(startTime, MicrometerUtility.EXECUTION_TIME,
 //				"GET");
@@ -43,7 +55,7 @@ public class JsonPlaceholderController {
 //			MetricUtils.mdcLogging(applicationName, requester);
 //
 //			LOG.debug("[REQUEST]: {}", () -> request);
-//			users = userService.getUsers(headerRequestId, activeSpan);
+//			users = userService.getUsers();
 //
 //		} finally {
 //			MicrometerUtility.timeElapsed(startTime, executionJsonRequestTimer);
