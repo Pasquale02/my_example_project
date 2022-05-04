@@ -1,7 +1,12 @@
 package com;
 
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,7 +34,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyProjectMvnApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
+		log.info("init main");
+
+		String date = LocalDateTime.now().toString();
+		
+		String dataUtile = date.substring(0, date.indexOf("."));
+		String due = dataUtile.replace("T", " ");
+
+		log.info(due);
+
+		// se hai nella data il formato CEST
+        String dateStr = "Mon Apr 20 00:00:00 CEST 2020";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d H:mm:ss zzz yyyy", Locale.ENGLISH);
+        ZonedDateTime parsedDate = ZonedDateTime.parse(dateStr, formatter);
+        System.out.println(parsedDate);
+        System.out.println(parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		
 		SpringApplication.run(MyProjectMvnApplication.class, args);
 	}
 
@@ -66,6 +87,9 @@ public class MyProjectMvnApplication {
 	CommandLineRunner run(UserService userService) {
 		log.info("adding elements to db");
 		return args -> {
+			
+			userService.removeAllUsers();
+			userService.removeAllRoles();
 			userService.saveRole(new Ruolo(null, "ROLE_USER"));
 			userService.saveRole(new Ruolo(null, "ROLE_MANAGER"));
 			userService.saveRole(new Ruolo(null, "ROLE_ADMIN"));

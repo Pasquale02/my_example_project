@@ -17,4 +17,10 @@ public interface UserService {
 	Utente getUser(String username);
 
 	List<Utente> getUsers();
-}
+	
+	void removeAllUsers();
+	
+	void removeAllRoles();
+
+	void removeAll();
+	}

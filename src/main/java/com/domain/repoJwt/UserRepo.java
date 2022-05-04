@@ -10,7 +10,6 @@ import com.domainJwt.Utente;
  * @implNote first parameter class to manage, second parameter type of index
  */
 public interface UserRepo extends JpaRepository<Utente, Long> {
-	
-	Utente findByUsername(String username);
 
+	Utente findByUsername(String username);
 }

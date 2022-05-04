@@ -7,13 +7,15 @@ spring:
     username: postgres
     password: postgres
   jpa:
-    hibernate:
-      ddl-auto: create
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQL8Dialect
-          show_sql: true
-          format_sql: true
+    show-sql: true
+    ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation:true
 
 swagger:
   enable: true

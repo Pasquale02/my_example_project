@@ -59,4 +59,23 @@ public class UserServiceImpl implements UserService {
 		log.info("Fetching users from db");
 		return userRepo.findAll();
 	}
+
+	@Override
+	public void removeAllUsers() {
+		log.info("Delete all users from db");	
+		userRepo.deleteAll();
+	}
+
+	@Override
+	public void removeAllRoles() {
+		log.info("Delete all roles from db");	
+		roleRepo.deleteAll();		
+	}
+	
+	@Override
+	public void removeAll() {
+		log.info("Removing all users and roles");
+		userRepo.deleteAll();
+		roleRepo.deleteAll();	
+	}
 }
