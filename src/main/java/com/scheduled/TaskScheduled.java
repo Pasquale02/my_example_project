@@ -20,14 +20,22 @@ public class TaskScheduled {
 	private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	
+
 	@Autowired
 	UtenteService utenteService;
 
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 5000)
 	public void reportCurrentTime() {
 		LOG.info("The time is now {}", dateFormat.format(new Date()));
+		utenteService.deleteAll();
+
+		Utente user = new Utente(1, "nome", "cognome", "pasw");
+		Utente user2 = new Utente(2, "nome2", "cognome2", "pasw2");
+		Utente user3 = new Utente(3, "nome3", "cognome3", "pasw3");
+		utenteService.create(user);
+		utenteService.create(user2);
+		utenteService.create(user3);
 		List<Utente> utenti = utenteService.findAll();
-		System.out.println("utenti == "+ utenti);
+		System.out.println("utenti == " + utenti);
 	}
 }
