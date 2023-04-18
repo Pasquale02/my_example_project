@@ -24,7 +24,7 @@ public class TaskScheduled {
 	@Autowired
 	UtenteService utenteService;
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 60000)
 	public void reportCurrentTime() {
 		LOG.info("The time is now {}", dateFormat.format(new Date()));
 		List<Utente> utenti = utenteService.findAll();
