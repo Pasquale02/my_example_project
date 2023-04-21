@@ -54,7 +54,7 @@ management.endpoints.web.exposure.include: health,info,metrics,prometheus
 opentracing:
   jaeger:
     enabled: ${JAEGER_ENABLED:true}
-    service-name: ${JAEGER_SERVICE_NAME:ov-ws-anagrafica-cribis}
+    service-name: ${JAEGER_SERVICE_NAME:ms-my-project}
     log-spans: ${JAEGER_REPORTER_LOG_SPANS:false}
     probabilistic-sampler:
       sampling-rate: ${JAEGER_SAMPLING_RATE:1.0}
@@ -63,7 +63,12 @@ opentracing:
       port: ${JAEGER_AGENT_PORT:6831}
 
 logging:
+  file:
+    name: DemoLog.uno
+    max-size: 1MB
+  pattern:
+    file: "%d{dd-MM-yyyy} [%thread] %-5level %logger{36} -%msg%n"
   level:
     root: ${LOG_ROOT_LEVEL:info}
-    it:
-      posteitaliane: ${LOG_LEVEL:debug}
+    com:
+      scheduled: ${LOG_LEVEL:debug}
