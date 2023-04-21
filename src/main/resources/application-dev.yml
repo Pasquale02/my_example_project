@@ -63,9 +63,6 @@ opentracing:
       port: ${JAEGER_AGENT_PORT:6831}
 
 logging:
-  file:
-    name: DemoLog.uno
-    max-size: 1MB
   pattern:
     file: "%d{dd-MM-yyyy} [%thread] %-5level %logger{36} -%msg%n"
   level:
