@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.postgresEntity.Utente;
-import com.postgresService.UtenteService;
+import com.postgresEntity.Actor;
+import com.postgresService.ActorService;
 
 @Component
 public class TaskScheduled {
@@ -22,23 +22,19 @@ public class TaskScheduled {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 	@Autowired
-	UtenteService utenteService;
+	ActorService actorService;
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 20000)
 	public void reportCurrentTime() {
 		LOG.info("INFO: The time is now {}", dateFormat.format(new Date()));
 		LOG.debug("DEBUG: The time is now {}", dateFormat.format(new Date()));
 		try {
-			utenteService.deleteAll();
-
-			Utente user = new Utente(1, "nome", "cognome");
-			Utente user2 = new Utente(2, "nome2", "cognome2");
-			Utente user3 = new Utente(3, "nome3", "cognome3");
-			utenteService.create(user);
-			utenteService.create(user2);
-			utenteService.create(user3);
-			List<Utente> utenti = utenteService.findAll();
-			LOG.debug("utenti == " + utenti);
+			List<Actor> actors = actorService.findAll();
+			/*
+			 * foreach classico oppure lambda exp
+			 * for (String actor : actors) { System.out.println(actor); }
+			 */
+			actors.forEach(actor -> System.out.println(actor));
 		} catch (Exception e) {
 			LOG.error("Eccezione nell'accesso a db: " + e.getMessage());
 		}

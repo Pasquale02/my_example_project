@@ -11,16 +11,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "utente")
+@Table(name = "actor")
 @Getter
 @Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Utente {
+public class Actor {
 
 	@Id
-	Integer id;
-	String name;
-	String username;
+	Integer actor_id;
+	String first_name;
+	String last_name;
+	String last_update;
 }

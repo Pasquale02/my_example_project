@@ -3,7 +3,7 @@ spring:
     name: ov-ws-json-placeholder
   datasource: 
     platform: 'postgres'
-    url: 'jdbc:postgresql://localhost:5432/postgres'
+    url: 'jdbc:postgresql://localhost:5432/dvdrental'
     username: postgres
     password: postgres
   jpa:
