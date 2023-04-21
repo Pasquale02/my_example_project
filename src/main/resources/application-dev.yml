@@ -63,9 +63,5 @@ opentracing:
       port: ${JAEGER_AGENT_PORT:6831}
 
 logging:
-  pattern:
-    file: "%d{dd-MM-yyyy} [%thread] %-5level %logger{36} -%msg%n"
   level:
     root: ${LOG_ROOT_LEVEL:info}
-    com:
-      scheduled: ${LOG_LEVEL:debug}
