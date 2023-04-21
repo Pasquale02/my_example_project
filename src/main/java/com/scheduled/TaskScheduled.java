@@ -26,16 +26,21 @@ public class TaskScheduled {
 
 	@Scheduled(fixedRate = 5000)
 	public void reportCurrentTime() {
-		LOG.info("The time is now {}", dateFormat.format(new Date()));
-		utenteService.deleteAll();
+		LOG.info("INFO: The time is now {}", dateFormat.format(new Date()));
+		LOG.debug("DEBUG: The time is now {}", dateFormat.format(new Date()));
+		try {
+			utenteService.deleteAll();
 
-		Utente user = new Utente(1, "nome", "cognome", "pasw");
-		Utente user2 = new Utente(2, "nome2", "cognome2", "pasw2");
-		Utente user3 = new Utente(3, "nome3", "cognome3", "pasw3");
-		utenteService.create(user);
-		utenteService.create(user2);
-		utenteService.create(user3);
-		List<Utente> utenti = utenteService.findAll();
-		System.out.println("utenti == " + utenti);
+			Utente user = new Utente(1, "nome", "cognome");
+			Utente user2 = new Utente(2, "nome2", "cognome2");
+			Utente user3 = new Utente(3, "nome3", "cognome3");
+			utenteService.create(user);
+			utenteService.create(user2);
+			utenteService.create(user3);
+			List<Utente> utenti = utenteService.findAll();
+			LOG.debug("utenti == " + utenti);
+		} catch (Exception e) {
+			LOG.error("Eccezione nell'accesso a db: " + e.getMessage());
+		}
 	}
 }

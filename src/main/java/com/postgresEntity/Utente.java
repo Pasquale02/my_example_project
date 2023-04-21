@@ -23,6 +23,4 @@ public class Utente {
 	Integer id;
 	String name;
 	String username;
-	String password;
-
 }
