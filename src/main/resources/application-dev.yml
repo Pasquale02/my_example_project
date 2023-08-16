@@ -1,3 +1,4 @@
+# postgres non usato
 spring:
   application:
     name: ov-ws-json-placeholder
@@ -16,6 +17,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation:true
+            
+########################
 
 swagger:
   enable: true
@@ -24,14 +27,14 @@ swagger:
     description: 'Api for manage json placeholder'
 
 springdoc:
-  version: 1.0.2
+  version: 1.0.0
 
 api-docs:
   hosts:
-    - url: 'http://localhost:8081/users'
-      description: "Get Locale"
-    - url: 'http://localhost:8081/post/pdf'
-      description: "Post Locale"
+    - url: 'http://localhost:8080/users'
+      description: "Get from jsonplaceholder"
+    - url: 'http://localhost:8080/post'
+      description: "Post to jsonplaceholder"
 
 # management port
 management:
