@@ -1,4 +1,5 @@
-# postgres non usato
+# postgres usato nello scheduling
+
 spring:
   application:
     name: ov-ws-json-placeholder
@@ -18,8 +19,6 @@ spring:
           lob:
             non_contextual_creation:true
             
-########################
-
 swagger:
   enable: true
   apiInfo:

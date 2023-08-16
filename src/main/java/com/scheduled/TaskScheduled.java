@@ -26,6 +26,7 @@ public class TaskScheduled {
 
 	@Scheduled(fixedRate = 20000)
 	public void reportCurrentTime() {
+		LOG.info("");
 		LOG.info("INFO: The time is now {}", dateFormat.format(new Date()));
 		LOG.debug("DEBUG: The time is now {}", dateFormat.format(new Date()));
 		try {
