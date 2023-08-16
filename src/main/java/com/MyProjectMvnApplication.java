@@ -1,9 +1,16 @@
 package com;
 
+import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +31,24 @@ import io.jaegertracing.Configuration;
 public class MyProjectMvnApplication {
 
 	public static void main(String[] args) {
+		final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+
+		log.info("init main");
+
+		String date = LocalDateTime.now().toString();
+		
+		String dataUtile = date.substring(0, date.indexOf("."));
+		String due = dataUtile.replace("T", " ");
+
+		log.info(due);
+
+		// se hai nella data il formato CEST
+        String dateStr = "Mon Apr 20 00:00:00 CEST 2020";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d H:mm:ss zzz yyyy", Locale.ENGLISH);
+        ZonedDateTime parsedDate = ZonedDateTime.parse(dateStr, formatter);
+        System.out.println(parsedDate);
+        System.out.println(parsedDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+		
 		SpringApplication.run(MyProjectMvnApplication.class, args);
 	}
 
